@@ -1,0 +1,77 @@
+public class Solution {
+
+    // Definition for singly-linked list (nested so it works in a single file locally)
+    public static class ListNode {
+        int val;
+        ListNode next;
+        ListNode() {}
+        ListNode(int val) { this.val = val; }
+        ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+    }
+
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode dummyHead = new ListNode(0);
+        ListNode current = dummyHead;
+        int carry = 0;
+        
+        while (l1 != null || l2 != null || carry != 0) {
+            int sum = carry;
+            
+            if (l1 != null) {
+                sum += l1.val;
+                l1 = l1.next;
+            }
+            
+            if (l2 != null) {
+                sum += l2.val;
+                l2 = l2.next;
+            }
+            
+            carry = sum / 10;
+            current.next = new ListNode(sum % 10);
+            current = current.next;
+        }
+        
+        return dummyHead.next;
+    }
+    
+    // Helper method to convert an array into a linked list
+    public static ListNode createList(int[] nums) {
+        ListNode dummy = new ListNode(0);
+        ListNode current = dummy;
+        for (int num : nums) {
+            current.next = new ListNode(num);
+            current = current.next;
+        }
+        return dummy.next;
+    }
+    
+    // Helper method to print the linked list
+    public static void printList(ListNode node) {
+        java.util.StringJoiner sj = new java.util.StringJoiner(", ", "[", "]");
+        while (node != null) {
+            sj.add(String.valueOf(node.val));
+            node = node.next;
+        }
+        System.out.println(sj.toString());
+    }
+    
+    // Main method for local execution
+    public static void main(String[] args) {
+        Solution solver = new Solution();
+        
+        // Test Case 1: l1 = [2,4,3], l2 = [5,6,4] (342 + 465 = 807 -> [7,0,8])
+        ListNode l1 = createList(new int[]{2, 4, 3});
+        ListNode l2 = createList(new int[]{5, 6, 4});
+        ListNode result1 = solver.addTwoNumbers(l1, l2);
+        System.out.print("Test 1 Output: ");
+        printList(result1);
+        
+        // Test Case 2: l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9]
+        ListNode l3 = createList(new int[]{9, 9, 9, 9, 9, 9, 9});
+        ListNode l4 = createList(new int[]{9, 9, 9, 9});
+        ListNode result2 = solver.addTwoNumbers(l3, l4);
+        System.out.print("Test 2 Output: ");
+        printList(result2);
+    }
+}
